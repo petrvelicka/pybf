@@ -77,7 +77,7 @@ def find_matching_bracket(code, start, close):
                     found -= 1
                 current += 1
             return current - 1
-    elif start > 1:
+    elif start >= 1:
         found = 1
         current = start - 1
         while found and current > -1:
