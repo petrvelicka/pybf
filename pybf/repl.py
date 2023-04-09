@@ -43,6 +43,7 @@ def repl(strict_mode):
                 repl_interpreter = bf.Interpreter()
                 continue
             while not check_parentheses(_in)[0]:
+                printf(check_parentheses(_in))
                 _in += session.prompt(". ").strip()
             repl_interpreter.run(_in)
             printf()
@@ -63,7 +64,8 @@ if __name__ == "__main__":
         if not path.exists() and not path.is_dir():
             printf(f"Error: {path}: file not found")
             sys.exit(-1)
-        with open(path, "r", encoding="utf8").read() as file:
+        with open(path, "r", encoding="utf-8") as file_handler:
+            file = file_handler.read()
             if args.check:
                 printf("Check only mode...")
                 result = check_parentheses(file)
