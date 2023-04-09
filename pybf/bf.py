@@ -1,7 +1,8 @@
 import sys
 
 class Interpreter:
-    def __init__(self):
+    def __init__(self, strict=False):
+        self.strict = strict
         self.memory = [0] * 30_000
         self.pointer = 0
     
@@ -13,7 +14,10 @@ class Interpreter:
         while current < len(code):
             command = code[current]
             if command in "><+-.,":
-                self.process_command(command)
+                try:
+                    self.process_command(command)
+                except IndexError as e:
+                    print(f"Error at character {current}: {e}")
             if command == "[":
                 if self.memory[self.pointer] == 0:
                     end = find_matching_bracket(code, current, close=True)
@@ -27,9 +31,13 @@ class Interpreter:
 
     def process_command(self, command):
         if command == ">":
+            if self.strict and self.pointer >= 30_000:
+                raise IndexError("Pointer too big")
             self.pointer += 1
             return
         if command == "<":
+            if self.strict and self.pointer <= 0:
+                raise IndexError("Pointer can't be negative")
             self.pointer -= 1
             return
         if command == "+":

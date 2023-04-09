@@ -11,6 +11,7 @@ from prompt_toolkit import print_formatted_text as print
 def setup_args():
     parser = argparse.ArgumentParser(prog="pybf", description="Yet another BrainFuck interpreter")
     parser.add_argument("-c", "--check", action="store_true", help="only checks code for correctness, doesn't execute anything")
+    parser.add_argument("-s", "--strict", action="store_true", help="check bounds while executing")
     parser.add_argument("path", nargs='?', help="input file for interpreting")
     
     return parser.parse_args()
@@ -27,8 +28,8 @@ def check_parentheses(string):
                 return False, index
     return True, -1
 
-def repl():
-    interpreter = bf.Interpreter()
+def repl(strict_mode):
+    interpreter = bf.Interpreter(strict=strict_mode)
     session = PromptSession()
     patch_stdout()
     while True:
@@ -53,6 +54,9 @@ def repl():
 
 if __name__ == "__main__":
     args = setup_args()
+    strict_mode = args.strict
+    if strict_mode:
+        print("Warning, strict mode enabled..")
     if args.path:
         path = Path(args.path)
         if not path.exists() and not path.is_dir():
@@ -65,12 +69,12 @@ if __name__ == "__main__":
             if result[0] == False:
                 print(f"Error: mismatched parenthesis found at character {result[1]}")
             sys.exit(0)
-        interpreter = bf.Interpreter()
+        interpreter = bf.Interpreter(strict_mode)
         interpreter.run(file)
         print()
     else:
         if not args.check:
             print("Starting REPL, type exit or ^D to exit")
-            repl()
+            repl(strict_mode)
         else:
             print("Unexpected parameter -c, only applies to file mode")
