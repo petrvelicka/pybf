@@ -1,0 +1,15 @@
+[tool.poetry]
+name = "pybf"
+version = "0.1.0"
+description = "Yet another Brainfuck interpreter"
+authors = ["Petr Velička <petrvelicka@tuta.io>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+prompt-toolkit = "^3.0.38"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
