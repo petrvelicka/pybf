@@ -1,37 +1,39 @@
 import sys
 
+from prompt_toolkit import print_formatted_text as printf
+
 class Interpreter:
     def __init__(self, strict=False):
         self.strict = strict
         self.memory = [0] * 30_000
         self.pointer = 0
-    
+
     def run(self, code: str):
         if not code:
             return
-        
+
         current = 0
         while current < len(code):
             command = code[current]
             if command in "><+-.,":
                 try:
                     self.process_command(command)
-                except IndexError as e:
-                    print(f"Error at character {current}: {e}")
+                except IndexError as error:
+                    printf(f"Error at character {current}: {error}")
             if command == "[":
                 if self.memory[self.pointer] == 0:
                     end = find_matching_bracket(code, current, close=True)
                     if end != -1:
                         current = end
                     else:
-                        print(f"Error at charater {current}: no matching bracket found")
+                        printf(f"Error at charater {current}: no matching bracket found")
             if command == "]":
                 if self.memory[self.pointer] != 0:
                     start = find_matching_bracket(code, current, close=False)
                     if start != -1:
                         current = start
                     else:
-                        print(f"Error at charater {current}: no matching bracket found")
+                        printf(f"Error at charater {current}: no matching bracket found")
             current += 1
 
 
@@ -53,11 +55,11 @@ class Interpreter:
             self.memory[self.pointer] -= 1
             return
         if command == ".":
-            print(chr(self.memory[self.pointer]), end="")
+            printf(chr(self.memory[self.pointer]), end="")
             return
         if command == ",":
             self.read_byte()
-    
+
     def read_byte(self):
         byte = sys.stdin.buffer.read()
         self.memory[self.pointer] = byte
