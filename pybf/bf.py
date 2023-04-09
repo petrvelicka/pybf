@@ -21,11 +21,17 @@ class Interpreter:
             if command == "[":
                 if self.memory[self.pointer] == 0:
                     end = find_matching_bracket(code, current, close=True)
-                    current = end            
+                    if end != -1:
+                        current = end
+                    else:
+                        print(f"Error at charater {current}: no matching bracket found")
             if command == "]":
                 if self.memory[self.pointer] != 0:
                     start = find_matching_bracket(code, current, close=False)
-                    current = start
+                    if start != -1:
+                        current = start
+                    else:
+                        print(f"Error at charater {current}: no matching bracket found")
             current += 1
 
 
@@ -69,8 +75,7 @@ def find_matching_bracket(code, start, close):
                     found -= 1
                 current += 1
             return current - 1
-        return -1
-    if start > 1:
+    elif start > 1:
         found = 1
         current = start - 1
         while found and current > -1:
