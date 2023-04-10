@@ -3,10 +3,17 @@ import sys
 from prompt_toolkit import print_formatted_text as printf
 
 class Interpreter:
-    def __init__(self, strict=False):
+    def __init__(self, strict=False, output=None):
         self.strict = strict
         self.memory = [0] * 30_000
         self.pointer = 0
+        if output:
+            self.output = open(output, "w")
+        else:
+            self.output = sys.stdout
+
+    def __del__(self):
+        self.output.close()
 
     def run(self, code: str):
         if not code:
@@ -19,21 +26,21 @@ class Interpreter:
                 try:
                     self.process_command(command)
                 except IndexError as error:
-                    printf(f"Error at character {current}: {error}")
+                    printf(f"Error at character {current}: {error}", file=sys.stderr)
             if command == "[":
                 if self.memory[self.pointer] == 0:
                     end = find_matching_bracket(code, current, close=True)
                     if end != -1:
                         current = end
                     else:
-                        printf(f"Error at charater {current}: no matching bracket found")
+                        printf(f"Error at charater {current}: no matching bracket found", file=sys.stderr)
             if command == "]":
                 if self.memory[self.pointer] != 0:
                     start = find_matching_bracket(code, current, close=False)
                     if start != -1:
                         current = start
                     else:
-                        printf(f"Error at charater {current}: no matching bracket found")
+                        printf(f"Error at charater {current}: no matching bracket found", file=sys.stderr)
             current += 1
 
 
@@ -55,7 +62,7 @@ class Interpreter:
             self.memory[self.pointer] -= 1
             return
         if command == ".":
-            printf(chr(self.memory[self.pointer]), end="")
+            printf(chr(self.memory[self.pointer]), end="", file=self.output)
             return
         if command == ",":
             self.read_byte()

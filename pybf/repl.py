@@ -13,6 +13,7 @@ def setup_args():
     parser.add_argument("-c", "--check", action="store_true",
                         help="only checks code for correctness, doesn't execute anything")
     parser.add_argument("-s", "--strict", action="store_true", help="check bounds while executing")
+    parser.add_argument("-o", "--output", help="file for outputting, only in file interpret mode")
     parser.add_argument("path", nargs='?', help="input file for interpreting")
 
     return parser.parse_args()
@@ -72,7 +73,8 @@ if __name__ == "__main__":
                 if not result[0]:
                     printf(f"Error: mismatched parenthesis found at character {result[1]}")
                 sys.exit(0)
-            interpreter = bf.Interpreter(strict)
+            output_file = args.output
+            interpreter = bf.Interpreter(strict, output=output_file)
             interpreter.run(file)
             printf()
     else:
