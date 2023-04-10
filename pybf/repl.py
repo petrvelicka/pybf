@@ -8,27 +8,40 @@ from prompt_toolkit import print_formatted_text as printf
 
 import bf
 
+
 def setup_args():
-    parser = argparse.ArgumentParser(prog="pybf", description="Yet another BrainFuck interpreter")
-    parser.add_argument("-c", "--check", action="store_true",
-                        help="only checks code for correctness, doesn't execute anything")
-    parser.add_argument("-s", "--strict", action="store_true", help="check bounds while executing")
-    parser.add_argument("-o", "--output", help="file for outputting, only in file interpret mode")
-    parser.add_argument("path", nargs='?', help="input file for interpreting")
+    parser = argparse.ArgumentParser(
+        prog="pybf", description="Yet another BrainFuck interpreter"
+    )
+    parser.add_argument(
+        "-c",
+        "--check",
+        action="store_true",
+        help="only checks code for correctness, doesn't execute anything",
+    )
+    parser.add_argument(
+        "-s", "--strict", action="store_true", help="check bounds while executing"
+    )
+    parser.add_argument(
+        "-o", "--output", help="file for outputting, only in file interpret mode"
+    )
+    parser.add_argument("path", nargs="?", help="input file for interpreting")
 
     return parser.parse_args()
+
 
 def check_parentheses(string):
     for index, character in enumerate(string):
         if character == "[":
-            close = bf.find_matching_bracket(string, index, close = True)
+            close = bf.find_matching_bracket(string, index, close=True)
             if close == -1:
                 return False, index
         if character == "]":
-            start = bf.find_matching_bracket(string, index, close = False)
+            start = bf.find_matching_bracket(string, index, close=False)
             if start == -1:
                 return False, index
     return True, -1
+
 
 def repl(strict_mode):
     repl_interpreter = bf.Interpreter(strict=strict_mode)
@@ -71,7 +84,9 @@ if __name__ == "__main__":
                 printf("Check only mode...")
                 result = check_parentheses(file)
                 if not result[0]:
-                    printf(f"Error: mismatched parenthesis found at character {result[1]}")
+                    printf(
+                        f"Error: mismatched parenthesis found at character {result[1]}"
+                    )
                 sys.exit(0)
             output_file = args.output
             interpreter = bf.Interpreter(strict, output=output_file)

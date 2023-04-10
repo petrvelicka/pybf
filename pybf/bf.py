@@ -2,6 +2,7 @@ import sys
 
 from prompt_toolkit import print_formatted_text as printf
 
+
 class Interpreter:
     def __init__(self, strict=False, output=None):
         self.strict = strict
@@ -33,16 +34,21 @@ class Interpreter:
                     if end != -1:
                         current = end
                     else:
-                        printf(f"Error at charater {current}: no matching bracket found", file=sys.stderr)
+                        printf(
+                            f"Error at charater {current}: no matching bracket found",
+                            file=sys.stderr,
+                        )
             if command == "]":
                 if self.memory[self.pointer] != 0:
                     start = find_matching_bracket(code, current, close=False)
                     if start != -1:
                         current = start
                     else:
-                        printf(f"Error at charater {current}: no matching bracket found", file=sys.stderr)
+                        printf(
+                            f"Error at charater {current}: no matching bracket found",
+                            file=sys.stderr,
+                        )
             current += 1
-
 
     def process_command(self, command):
         if command == ">":
