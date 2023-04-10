@@ -14,7 +14,8 @@ class Interpreter:
             self.output = sys.stdout
 
     def __del__(self):
-        self.output.close()
+        if self.output != sys.stdout:
+            self.output.close()
 
     def run(self, code: str):
         if not code:
