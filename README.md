@@ -4,4 +4,13 @@ Yet another brainfuck interpreter
 
 ## Compiling from source
 
-This project uses [Poetry](https://python-poetry.org). To install required dependecies, run `poetry install`, then you can use `poetry run python pybf/repl.py` to start the interpreter. 
+Install needed dependencies using `pip install -r requirements.txt`
+
+The run the program using `python pybf/repl.py`, add `--help` to show help.
+
+## Supported modes
+
+- direct REPL
+- interpret code saved in a file
+- check code saved in a file
+- interpret file and redirect standard output to a file 
