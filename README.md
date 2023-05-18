@@ -14,3 +14,7 @@ The run the program using `python pybf/repl.py`, add `--help` to show help.
 - interpret code saved in a file
 - check code saved in a file
 - interpret file and redirect standard output to a file 
+
+## Testing
+
+This project uses pytest, to test the codebase run `pytest`
