@@ -24,7 +24,8 @@ class Interpreter:
                 try:
                     self.process_command(command)
                 except IndexError as error:
-                    printf(f"Error at character {current}: {error}", file=sys.stderr)
+                    printf(f"Error at character {current}: {error}",
+                           file=sys.stderr)
             if command == "[":
                 if self.memory[self.pointer] == 0:
                     end = find_matching_bracket(code, current, close=True)

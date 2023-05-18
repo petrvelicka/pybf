@@ -20,10 +20,12 @@ def setup_args():
         help="only checks code for correctness, doesn't execute anything",
     )
     parser.add_argument(
-        "-s", "--strict", action="store_true", help="check bounds while executing"
+        "-s", "--strict", action="store_true",
+        help="check bounds while executing"
     )
     parser.add_argument(
-        "-o", "--output", help="file for outputting, only in file interpret mode"
+        "-o", "--output",
+        help="file for outputting, only in file interpret mode"
     )
     parser.add_argument("path", nargs="?", help="input file for interpreting")
 
