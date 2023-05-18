@@ -13,10 +13,6 @@ class Interpreter:
         else:
             self.output = sys.stdout
 
-    def __del__(self):
-        if self.output != sys.stdout:
-            self.output.close()
-
     def run(self, code: str):
         if not code:
             return
@@ -84,13 +80,15 @@ def find_matching_bracket(code, start, close):
         if start < len(code) - 1:
             found = 1
             current = start + 1
-            while found and current < len(code):
+            while current < len(code):
                 if code[current] == "[":
                     found += 1
                 if code[current] == "]":
                     found -= 1
+                if found == 0:
+                    return current
                 current += 1
-            return current - 1
+            return -1
     elif start >= 1:
         found = 1
         current = start - 1
@@ -99,6 +97,8 @@ def find_matching_bracket(code, start, close):
                 found += 1
             if code[current] == "[":
                 found -= 1
+            if found == 0:
+                return current
             current -= 1
-        return current + 1
+        return -1
     return -1

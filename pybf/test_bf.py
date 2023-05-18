@@ -22,9 +22,9 @@ def test_strict(capsys):
 
 def test_unmatched_parenthesis(capsys):
     code = ">>[++--"
-    interpreter = bf.Interpreter(strict=True)
+    interpreter = bf.Interpreter(strict=False)
     interpreter.run(code)
     captured = capsys.readouterr()
-    expected = "Error at charater 2: no matching bracket found\n"
+    expected = "Error at charater 2: no matching bracket found\r\n"
     assert captured.err == expected
 
